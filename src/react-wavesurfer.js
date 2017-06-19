@@ -197,8 +197,7 @@ class Wavesurfer extends Component {
     }
 
     // update playing state
-    if (this.props.playing !== nextProps.playing ||
-      this._wavesurfer.isPlaying() !== nextProps.playing) {
+    if (this.props.playing !== nextProps.playing) {
       if (nextProps.playing) {
         this._wavesurfer.play();
       } else {
