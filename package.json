@@ -12,7 +12,7 @@
     "build:main.min": "./node_modules/.bin/webpack --progress --colors --optimize-minimize --optimize-occurence-order --optimize-dedupe --config build-config/main.config.min.js",
     "build:plugins": "./node_modules/.bin/webpack --progress --colors --config build-config/plugins.config.js",
     "build:plugins.min": "./node_modules/.bin/webpack --progress --colors --optimize-minimize --optimize-occurence-order --optimize-dedupe --config build-config/plugins.config.min.js",
-    "build": "npm-run-all --parallel build:main build:main.min build:plugins build:plugins.min update-changelog",
+    "build": "npm-run-all --parallel build:main build:main.min",
     "prepublish": "npm run build"
   },
   "author": "Martin Spencer <mail@martinspencer.de>",
