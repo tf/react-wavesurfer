@@ -220,6 +220,18 @@ class Wavesurfer extends Component {
       this._wavesurfer.setPlaybackRate(nextProps.options.audioRate);
     }
 
+    if (nextProps.options.waveColor !== this.props.options.waveColor) {
+      this._wavesurfer.setWaveColor(nextProps.options.waveColor);
+    }
+
+    if (nextProps.options.progressColor !== this.props.options.progressColor) {
+      this._wavesurfer.setProgressColor(nextProps.options.progressColor);
+    }
+
+    if (nextProps.options.height !== this.props.options.height) {
+      this._wavesurfer.setHeight(nextProps.options.height);
+    }
+
     // turn responsive on
     if (nextProps.responsive && this.props.responsive !== nextProps.responsive) {
       window.addEventListener('resize', this._handleResize, false);
