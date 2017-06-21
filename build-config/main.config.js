@@ -54,6 +54,12 @@ module.exports = {
       commonjs2: 'wavesurfer.js',
       commonjs: 'wavesurfer.js',
       amd: 'wavesurfer'
+    },
+    'react-measure': {
+      root: 'Measure',
+      commonjs2: 'react-measure',
+      commonjs: 'react-measure',
+      amd: 'react-measure'
     }
   }],
 

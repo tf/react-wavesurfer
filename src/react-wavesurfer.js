@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import assign from 'deep-assign';
 
 const WaveSurfer = require('wavesurfer.js');
+const Measure = require('react-measure');
 
 const EVENTS = [
   'audioprocess',
@@ -37,17 +38,6 @@ function positiveIntegerProptype(props, propName, componentName) {
   return null;
 }
 
-const resizeThrottler = (fn) => () => {
-  let resizeTimeout;
-
-  if (!resizeTimeout) {
-    resizeTimeout = setTimeout(() => {
-      resizeTimeout = null;
-      fn();
-    }, 66);
-  }
-};
-
 class Wavesurfer extends Component {
   constructor(props) {
     super(props);
@@ -65,12 +55,11 @@ class Wavesurfer extends Component {
     this._loadAudio = this._loadAudio.bind(this);
     this._seekTo = this._seekTo.bind(this);
 
-    if (this.props.responsive) {
-      this._handleResize = resizeThrottler(() => {
-        // resize/redraw the waveform
+    this._handleResize = () => {
+      if (this.state.isReady) {
         this._wavesurfer.drawBuffer();
-      });
-    }
+      }
+    };
   }
 
   componentDidMount() {
@@ -161,10 +150,6 @@ class Wavesurfer extends Component {
     if (this.props.mediaElt) {
       this._loadMediaElt(this.props.mediaElt, this.props.audioPeaks);
     }
-
-    if (this.props.responsive) {
-      window.addEventListener('resize', this._handleResize, false);
-    }
   }
 
   // update wavesurfer rendering manually
@@ -235,16 +220,6 @@ class Wavesurfer extends Component {
     if (nextProps.options.height !== this.props.options.height) {
       this._wavesurfer.setHeight(nextProps.options.height);
     }
-
-    // turn responsive on
-    if (nextProps.responsive && this.props.responsive !== nextProps.responsive) {
-      window.addEventListener('resize', this._handleResize, false);
-    }
-
-    // turn responsive off
-    if (!nextProps.responsive && this.props.responsive !== nextProps.responsive) {
-      window.removeEventListener('resize', this._handleResize);
-    }
   }
 
   shouldComponentUpdate() {
@@ -259,10 +234,6 @@ class Wavesurfer extends Component {
 
     // destroy wavesurfer instance
     this._wavesurfer.destroy();
-
-    if (this.props.responsive) {
-      window.removeEventListener('resize', this._handleResize);
-    }
   }
 
   // receives seconds and transforms this to the position as a float 0-1
@@ -317,6 +288,18 @@ class Wavesurfer extends Component {
     }
   }
 
+  _measureIfResponsive(children) {
+    if (this.props.responsive) {
+      return (
+        <Measure whitelist={['width', 'height']} onMeasure={this._handleResize}>
+          {children}
+        </Measure>
+      );
+    }
+
+    return children;
+  }
+
   render() {
     const childrenWithProps = (this.props.children)
       ? React.Children.map(
@@ -326,7 +309,8 @@ class Wavesurfer extends Component {
           isReady: this.state.isReady
         }))
       : false;
-    return (
+
+    return this._measureIfResponsive(
       <div>
         <div ref={(c) => { this.wavesurferEl = c; }} />
         {childrenWithProps}
