@@ -68,7 +68,7 @@ class Wavesurfer extends Component {
     if (this.props.responsive) {
       this._handleResize = resizeThrottler(() => {
         // resize/redraw the waveform
-        this._wavesurfer.drawBuffer();
+        this._wavesurfer.refresh();
       });
     }
   }
