@@ -57,7 +57,7 @@ class Wavesurfer extends Component {
 
     this._handleResize = () => {
       if (this.state.isReady) {
-        this._wavesurfer.drawBuffer();
+        this._wavesurfer.refresh();
       }
     };
   }
