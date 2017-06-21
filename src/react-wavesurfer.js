@@ -228,6 +228,10 @@ class Wavesurfer extends Component {
       this._wavesurfer.setProgressColor(nextProps.options.progressColor);
     }
 
+    if (nextProps.options.cursorColor !== this.props.options.cursorColor) {
+      this._wavesurfer.setCursorColor(nextProps.options.cursorColor);
+    }
+
     if (nextProps.options.height !== this.props.options.height) {
       this._wavesurfer.setHeight(nextProps.options.height);
     }
