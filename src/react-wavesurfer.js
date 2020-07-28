@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import assign from 'deep-assign';
 
 const WaveSurfer = require('wavesurfer.js');
-const Measure = require('react-measure');
+const Measure = require('react-measure').default;
 
 const EVENTS = [
   'audioprocess',
@@ -291,8 +292,14 @@ class Wavesurfer extends Component {
   _measureIfResponsive(children) {
     if (this.props.responsive) {
       return (
-        <Measure whitelist={['width', 'height']} onMeasure={this._handleResize}>
-          {children}
+        <Measure client onResize={this._handleResize}>
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              {children}
+            </div>
+          )
+
+          }
         </Measure>
       );
     }
